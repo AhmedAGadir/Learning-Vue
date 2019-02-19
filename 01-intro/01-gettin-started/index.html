@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- Vue CDN -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="../../vue.js"></script>
+</head>
+
+<body>
+
+    <!-- vue creates a template based on our HTML code, stores that internally and then uses that template to create the HTML code which is rendered in the DOM -->
+    <div id="app">
+        <input type="text" v-on:input="changeTitle">
+        <h1 v-once>{{ title }}</h1>
+        <p>{{ title }}</p>
+        <p>{{ sayHello() }}</p>
+        <!-- you can only use double curly braces in places where html text is rendered, the following wouldnt work -->
+        <!-- <a href="{{link}}">Google</a> -->
+        <!-- the way to bind html attributes dynamically is to to it like this -->
+        <a v-bind:href="link">Google</a>
+        <hr>
+        <p>{{ finishedLink }}</p>
+        <p v-html="finishedLink"></p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                title: 'Hello World!',
+                link: 'http://google.com',
+                finishedLink: '<a href="http://google.com">Google</a>' // if using double curly braces - this will be rendered as text, this protects us from cross-side scripting attacks. To render as HTML, use the v-html directive
+            },
+            methods: {
+                changeTitle: function (e) {
+                    console.log('changeTitle')
+                    // vue proxies all our data properties to the top vue instance object automatically 
+                    // therefore all the properties stored in data, and all the methods stored in methods are available on the 'this' keyword
+                    this.title = e.target.value;
+                },
+                sayHello: function () {
+                    this.title = 'Hello!'
+                    return 'Hello!';
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

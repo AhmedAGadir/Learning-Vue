@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- v-bind: allow us to bind (add) something to our template dynamically -->
+        <!-- v-on: is the opposite, it allows us to listen/receive something from our template  -->
+        <!-- vue stores the event object in a variable named $event -->
+        <button v-on:click="increment(2, $event)">Click me</button>
+        <p>{{ counter }}</p>
+        <p v-on:mousemove="updateCoordinates">
+            Coordinates: {{x}} / {{y}}
+            <!-- modifier .stop for stopPropgation, there is also .prevent for preventDefault, these modifiers can also be chained e.g. v-on:click.prevent.stop -->
+            - <span v-on:mouseover.stop="">DEAD SPOT</span>
+        </p>
+        <!-- key modifiers e.g. .enter, .tab, .space etc. can also chain these -->
+        <input type="text" v-on:keyup.enter="alertMe">
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                counter: 0,
+                x: null,
+                y: null,
+            },
+            methods: {
+                increment: function (step = 1, event) {
+                    console.log('clicked', event)
+                    this.counter += step;
+                },
+                updateCoordinates: function (event) {
+                    this.x = event.clientX;
+                    this.y = event.clientY;
+                },
+                alertMe: function () {
+                    alert('Alert!')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

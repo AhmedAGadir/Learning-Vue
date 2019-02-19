@@ -1,0 +1,2 @@
+- vue is small - 16kb - minified and gzipped
+- fast at runtime 
