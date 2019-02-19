@@ -16,6 +16,7 @@
     <!-- vue creates a template based on our HTML code, stores that internally and then uses that template to create the HTML code which is rendered in the DOM -->
     <div id="app">
         <input type="text" v-on:input="changeTitle">
+        <!-- can access the vue instance within the template without the 'this' keyword -->
         <h1 v-once>{{ title }}</h1>
         <p>{{ title }}</p>
         <p>{{ sayHello() }}</p>
