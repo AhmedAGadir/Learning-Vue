@@ -6,26 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .demo {
+            width: 100px;
+            height: 100px;
+            background: gray;
+            display: inline-block;
+            margin: 10px;
+        }
+    </style>
     <script src="https://npmcdn.com/vue/dist/vue.js"></script>
-
 </head>
 
 <body>
 
     <div id="app">
-        <!-- v:model sets up two way binding for a property-->
-        <input type="text" v-model='name'>
-        <input type="text" v-bind:value='name' v-on:input="name = $event.target.value">
-        <input type="text" :value='name' @input="name = $event.target.value">
-        <p>{{ name }}</p>
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <div class="demo"></div>
+        <hr>
+        <input type="text" v-model='color'>
     </div>
+
 
     <script>
         new Vue({
             el: '#app',
             data: {
-                name: 'Max'
-            }
+                color: 'gray'
+            },
         })
     </script>
 </body>

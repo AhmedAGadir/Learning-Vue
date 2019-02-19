@@ -12,7 +12,8 @@
 
 <body>
 
-    <div id="app">
+    <!-- ***** this can quickly become difficult to manage as our app grows ***** -->
+    <!-- <div id="app">
         <button v-on:click='increase'>Increase</button>
         <button v-on:click='decrease'>Decrease</button>
         <p>Counter: {{ counter }}</p>
@@ -27,7 +28,6 @@
                 result: ''
             },
             methods: {
-                // this can quickly become difficult to manage 
                 increase: function () {
                     this.counter++;
                     this.result = this.counter < 5 ? 'Less Than 5' : 'Greater Than or Equal to 5';
@@ -35,6 +35,79 @@
                 decrease: function () {
                     this.counter--;
                     this.result = this.counter < 5 ? 'Less Than 5' : 'Greater Than or Equal to 5';
+                },
+            }
+        })
+    </script> -->
+
+
+    <!-- ***** better ***** -->
+    <!-- <div id="app">
+        <button v-on:click='counter++'>Increase</button>
+        <button v-on:click='counter--'>Decrease</button>
+        <p>Counter: {{ counter }}</p>
+        <p>Result: {{ result() }}</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                counter: 0,
+                // data is not reactive
+                // result: ''
+            },
+            methods: {
+                // result() gets called on every update of the page
+                result: function() {
+                    return this.counter < 5 ? 'Less Than 5' : 'Greater Than or Equal to 5';
+                }
+            }
+        })
+    </script> -->
+
+    <div id="app">
+        <button v-on:click='counter++'>Increase</button>
+        <button v-on:click='counter--'>Decrease</button>
+        <button v-on:click='secondCounter++'>Increase Second</button>
+        <p>Counter: {{ counter }} | {{ secondCounter }}</p>
+        <!-- notice no parenthesis with computed properties -->
+        <p>Result: {{ result()}} | {{ output }}</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                counter: 0,
+                secondCounter: 0
+            },
+            computed: {
+                // computed properties are only re-rendered if the values that they depend on change
+                // return values are cached
+                // only work synchronously
+                output: function () {
+                    console.log('computed');
+                    return this.counter < 5 ? 'Less Than 5' : 'Greater Than or Equal to 5';
+                }
+            },
+            watch: {
+                // in computed, we set up a property (e.g. output) and then create a function for how that property should be computed
+                // watch is kind of the opposite, we write the data property we want to watch and then react to that property changing
+                // best practice to use computer properties > watch properties
+                // can work asynchronously 
+                counter: function (newValue) {
+                    var that = this;
+                    setTimeout(function () {
+                        that.counter = 0;
+                    }, 2000)
+                }
+            },
+            methods: {
+                // methods get called on every re-render
+                result: function () {
+                    console.log('method');
+                    return this.counter < 5 ? 'Less Than 5' : 'Greater Than or Equal to 5';
                 }
             }
         })
