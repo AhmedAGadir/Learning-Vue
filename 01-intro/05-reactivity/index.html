@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- v:model sets up two way binding for a property-->
+        <input type="text" v-model='name'>
+        <input type="text" v-bind:value='name' v-on:input="name = $event.target.value">
+        <p>{{ name }}</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                name: 'Max'
+            }
+        })
+    </script>
+</body>
+
+</html>
