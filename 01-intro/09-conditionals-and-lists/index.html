@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <!-- a new directive: v-if
+        attaches and detaches elements from the DOM -->
+
+    <!-- <div id="app">
+        <p v-if="show">You can see <em>me</em>!</p>
+        <p v-else>Do you also see me?</p>
+        <button @click='show = !show'>Switch</button>
+    </div> -->
+
+    <!-- <div id="app">
+        <p v-if="show">You can see <em>me</em>!</p>
+        <p v-else-if="Math.random() < 0.5">Now you see <strong>me</strong>!</p>
+        <p v-else>Do you also see <u>me</u>?</p>
+        <button @click='show = !show'>Switch</button>
+    </div> -->
+
+    <!-- HTML5 <template> element wont be rendered so we can use it to nest multiple elements inside our conditional-->
+    <!-- <div id="app">
+        <template v-if="show">
+            <p>Hello</p>
+            <p>World!</p>
+        </template>
+        <p v-else>Bye Bye!</p>
+        <button @click='show = !show'>Switch</button>
+    </div> -->
+
+    <div id="app">
+        <!-- v-show can be used to hide elements (not detach them) -->
+        <p v-show={show}>Hide me</p>
+        <!-- note: v-else is not available on v-show -->
+        <button @click='show = !show'>Switch</button>
+    </div>
+
+
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                show: true
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- another new directive: v-for
+            used for rendering lists -->
+
+        <!-- <ul>
+            <li v-for="ingredient in ingredients">{{ ingredient }}</li>
+            <li v-for="(ingredient, ind) in ingredients">{{ ingredient }} - {{ ind }}</li>
+        </ul>
+        <button @click="ingredients.push('spices')">Add New</button> -->
+
+
+        <!-- <template v-for="(ingredient, ind) in ingredients">
+            <h1>{{ ingredient }}</h1>
+            <p>{{ ind }}</p>
+        </template> -->
+
+
+        <!-- <ul>
+            <li v-for="person in persons">{{ person.name }}</li>
+        </ul> -->
+
+
+        <!-- <ul>
+            <li v-for="person in persons">
+                <div v-for='value in person'>{{ value }}</div>
+                <div v-for='(value, key) in person'>{{ key }}: {{ value }}</div>
+                <div v-for='(value, key, ind) in person'>{{ key }}: {{ value }} ({{ ind }})</div>
+            </li>
+        </ul> -->
+
+
+        <!-- <span v-for="n in 10">{{ n }}</span> -->
+
+
+        <!-- if you find that some items in a list are updating in a strange order etc. 
+            then assign a unique key to each list item. this will make vue not only track the position of the item in the list
+            but also track the actual item itself -->
+        <ul>
+            <li v-for="(ingredient, ind) in ingredients" :key="ingredient">{{ ingredient }} - {{ ind }}</li>
+        </ul>
+
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                ingredients: ['meat', 'fruit', 'cookies'],
+                persons: [
+                    { name: 'Max', age: '27', color: 'red' },
+                    { name: 'Anna', age: 'unknown', color: 'blue' }
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>
