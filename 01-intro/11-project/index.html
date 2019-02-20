@@ -47,7 +47,7 @@
             <div class="small-12 columns">
                 <ul>
                     <template v-for="turn in log">
-                        <li :class="turn.player === 'user' ? 'player-turn' : 'monster-turn'">{{ turn.message }}</li>
+                        <li :class="turn.player === 'user' ? 'player-turn' : 'monster-turn'">{{ turn.text }}</li>
                     </template>
                 </ul>
             </div>
@@ -70,26 +70,22 @@
                 compBkg: function () {
                     return this.getBkgColor(this.compHP);
                 },
+                isGameOver: function () {
+                    return this.userHP <= 0 || this.compHP <= 0;
+                }
             },
             watch: {
-                playing: function (val) {
-                    if (!val) {
+                playing: function (bool) {
+                    if (!bool) {
                         this.userHP = 100;
                         this.compHP = 100;
                         this.log = [];
                     }
                 },
-                userHP: function (val) {
-                    if (val <= 0) {
-                        if (window.confirm('You lose! Play again?')) {
-                            this.playing = false;
-                            setTimeout(() => this.playing = true, 0);
-                        }
-                    }
-                },
-                compHP: function (val) {
-                    if (val <= 0) {
-                        if (window.confirm('You win! Play again?')) {
+                isGameOver: function (bool) {
+                    if (bool) {
+                        var message = this.compHP <= 0 ? 'You win! Play again?' : 'You lose! Play again?'
+                        if (window.confirm(message)) {
                             this.playing = false;
                             setTimeout(() => this.playing = true, 0);
                         }
@@ -97,8 +93,8 @@
                 }
             },
             methods: {
-                getBkgColor: function (hp) {
-                    return hp < 30 ? 'red' : hp < 60 ? 'orange' : 'green';
+                getBkgColor: function (HP) {
+                    return HP < 30 ? 'red' : HP < 60 ? 'orange' : 'green';
                 },
                 attack: function () {
                     var deltaComp = -1 * (Math.floor(Math.random() * 10) + 5);
@@ -125,17 +121,17 @@
                     if (!deltaComp) {
                         var turn = {
                             player: deltaUser > 0 ? 'user' : 'computer',
-                            message: deltaUser > 0 ? `Player heals himself for ${deltaUser}` : `Monster hits player for ${-1 * deltaUser}`
+                            text: deltaUser > 0 ? `Player heals himself for ${deltaUser}` : `Monster hits player for ${-1 * deltaUser}`
                         };
                         this.log.unshift(turn);
                     } else {
                         var playerTurn = {
                             player: 'user',
-                            message: `Player hits monster for ${-1 * deltaComp}`
+                            text: `Player hits monster for ${-1 * deltaComp}`
                         };
                         var monsterTurn = {
                             player: 'computer',
-                            message: `Monster hits player for ${-1 * deltaUser}`
+                            text: `Monster hits player for ${-1 * deltaUser}`
                         };
                         this.log.unshift(monsterTurn, playerTurn);
                     }
