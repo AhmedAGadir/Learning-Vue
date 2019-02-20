@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+    <div id="app">
+        <section class="row">
+            <div class="small-6 columns">
+                <h1 class="text-center">YOU</h1>
+                <div class="healthbar">
+                    <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;"
+                        :style="{width: userHP + '%', backgroundColor: userBkg }">
+                        {{ userHP }}
+                    </div>
+                </div>
+            </div>
+            <div class="small-6 columns">
+                <h1 class="text-center">MONSTER</h1>
+                <div class="healthbar">
+                    <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;"
+                        :style="{width: compHP + '%', backgroundColor: compBkg }">
+                        {{ compHP }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="row controls" v-if="this.playing === false">
+            <div class="small-12 columns">
+                <button id="start-game" @click="playing = true">START NEW GAME</button>
+            </div>
+        </section>
+        <section class="row controls" v-else>
+            <div class="small-12 columns">
+                <button id="attack" @click='attack'>ATTACK</button>
+                <button id="special-attack" @click='specialAttack'>SPECIAL ATTACK</button>
+                <button id="heal" @click='heal'>HEAL</button>
+                <button id="give-up" @click='playing = false'>GIVE UP</button>
+            </div>
+        </section>
+        <section class="row log" v-show='log.length > 0'>
+            <div class="small-12 columns">
+                <ul>
+                    <template v-for="turn in log">
+                        <li :class="turn.player === 'user' ? 'player-turn' : 'monster-turn'">{{ turn.message }}</li>
+                    </template>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                userHP: 100,
+                compHP: 100,
+                playing: false,
+                log: []
+            },
+            computed: {
+                userBkg: function () {
+                    return this.getBkgColor(this.userHP);
+                },
+                compBkg: function () {
+                    return this.getBkgColor(this.compHP);
+                },
+            },
+            watch: {
+                playing: function (val) {
+                    if (!val) {
+                        this.userHP = 100;
+                        this.compHP = 100;
+                        this.log = [];
+                    }
+                },
+                userHP: function (val) {
+                    if (val <= 0) {
+                        if (window.confirm('You lose! Play again?')) {
+                            this.playing = false;
+                            setTimeout(() => this.playing = true, 0);
+                        }
+                    }
+                },
+                compHP: function (val) {
+                    if (val <= 0) {
+                        if (window.confirm('You win! Play again?')) {
+                            this.playing = false;
+                            setTimeout(() => this.playing = true, 0);
+                        }
+                    }
+                }
+            },
+            methods: {
+                getBkgColor: function (hp) {
+                    return hp < 30 ? 'red' : hp < 60 ? 'orange' : 'green';
+                },
+                attack: function () {
+                    var deltaComp = -1 * (Math.floor(Math.random() * 10) + 5);
+                    var deltaUser = -1 * (Math.floor(Math.random() * 10) + 5);
+                    this.compHP += deltaComp;
+                    this.userHP += deltaUser;
+                    this.updateLog(deltaComp, deltaUser);
+                },
+                specialAttack: function () {
+                    var deltaComp = -1 * (Math.floor(Math.random() * 20) + 5);
+                    var deltaUser = -1 * (Math.floor(Math.random() * 10) + 5);
+                    this.compHP += deltaComp;
+                    this.userHP += deltaUser;
+                    this.updateLog(deltaComp, deltaUser);
+                },
+                heal: function () {
+                    var deltaUserA = Math.floor(Math.random() * 10) + 5;
+                    var deltaUserB = -1 * (Math.floor(Math.random() * 10) + 5);
+                    this.userHP += deltaUserA + deltaUserB;
+                    this.updateLog(null, deltaUserA);
+                    this.updateLog(null, deltaUserB);
+                },
+                updateLog: function (deltaComp, deltaUser) {
+                    if (!deltaComp) {
+                        var turn = {
+                            player: deltaUser > 0 ? 'user' : 'computer',
+                            message: deltaUser > 0 ? `Player heals himself for ${deltaUser}` : `Monster hits player for ${-1 * deltaUser}`
+                        };
+                        this.log.unshift(turn);
+                    } else {
+                        var playerTurn = {
+                            player: 'user',
+                            message: `Player hits monster for ${-1 * deltaComp}`
+                        };
+                        var monsterTurn = {
+                            player: 'computer',
+                            message: `Monster hits player for ${-1 * deltaUser}`
+                        };
+                        this.log.unshift(monsterTurn, playerTurn);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
