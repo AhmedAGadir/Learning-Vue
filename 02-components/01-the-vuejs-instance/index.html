@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app1">
+        <h1 ref="heading">{{ title }}</h1>
+        <button @click="show" ref='myBtn'>Show Paragraph</button>
+        <p v-if="showParagraph">This is not always visible</p>
+    </div>
+
+    <div id="app2">
+        <h1>{{ title }}</h1>
+        <button @click='onChange'>Change something in v1</button>
+    </div>
+
+    <script>
+        // the vue instance is the middleman between our DOM (html) and our business logic
+        // note: if you're using multiple vue instances and they are dependant on one another, then its probably better to combine them into a single instance
+
+        var data = {
+            title: 'The First VueJS Instance',
+            showParagraph: false
+        }
+
+        // vue js takes the object that we pass to its constructor and proxies its properties (data, computed, methods etc ) so that they are directly accessible on the vue instance
+        // vue js also sets up watchers on those properties so that when they are changed the DOM can be updated - this creates reactivity
+        // vm stands for vue model
+        var vm1 = new Vue({
+            el: '#app1',
+            data: data,
+            methods: {
+                show: function () {
+                    this.showParagraph = true;
+                    this.updateTitle('The VueJS Instance (Updated)');
+                    console.log(this.$refs);
+                    this.$refs.myBtn.innerText = 'Test';
+
+                },
+                updateTitle: function (title) {
+                    this.title = title;
+                }
+            },
+            computed: {
+                lowercaseTitle: function (value) {
+                    return this.title.toLowerCase();
+                }
+            },
+            watch: {
+                title: function (value) {
+                    alert('Title changed, new value: ' + value);
+                }
+            }
+        });
+
+        // important
+        // you can use $refs to access and manipulate DOM elements directly but be careful because 
+        // when vue js re-renders, it does so based on its own template - potentially ignoring/overriding any changes made with $refs on the actual DOM
+        // for this reason $refs is more useful for getting values as opposed to setting them
+        vm1.$refs.heading.innerText = 'New Heading';
+
+
+        setTimeout(function () {
+            vm1.title = 'Changed by Timer!';
+            vm1.show();
+        }, 3000);
+
+        // this will create a property on the instance, however it wont be reactive - so its kindof useless
+        vm1.newProp = 'New!';
+        console.log(vm1);
+
+        console.log(vm1.title, vm1.$data.title);
+        // vue js does not create code that lives in its own enclosed world. its normal javascript code that can interact with other javascript code
+        console.log(data === vm1.$data);
+
+        var vm2 = new Vue({
+            el: '#app2',
+            data: {
+                title: 'The Second VueJS Instance',
+            },
+            methods: {
+                onChange: function () {
+                    vm1.title = 'Changed!';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
