@@ -14,15 +14,38 @@
     <div id="app1">
         <h1 ref="heading">{{ title }}</h1>
         <button @click="show" ref='myBtn'>Show Paragraph</button>
+        <bye></bye>
         <p v-if="showParagraph">This is not always visible</p>
     </div>
 
     <div id="app2">
         <h1>{{ title }}</h1>
+        <bye></bye>
+        <bye></bye>
+        <bye></bye>
         <button @click='onChange'>Change something in v1</button>
     </div>
 
+    <div id="app3"></div>
+
     <script>
+
+        // ************************************************
+        // ************ reusable components ***************
+        // ************************************************
+
+        // to create a reusable vue component use Vue.component
+        Vue.component('bye', {
+            // every <bye></bye> selector will be replaced by our template
+            template: '<p>Bye Bye!</p>'
+        })
+
+
+
+        // ************************************************
+        // ************ the Vue JS instance ***************
+        // ************************************************
+
         // the vue instance is the middleman between our DOM (html) and our business logic
         // note: if you're using multiple vue instances and they are dependant on one another, then its probably better to combine them into a single instance
 
@@ -34,6 +57,7 @@
         // vue js takes the object that we pass to its constructor and proxies its properties (data, computed, methods etc ) so that they are directly accessible on the vue instance
         // vue js also sets up watchers on those properties so that when they are changed the DOM can be updated - this creates reactivity
         // vm stands for vue model
+
         var vm1 = new Vue({
             el: '#app1',
             data: data,
@@ -61,26 +85,29 @@
             }
         });
 
-        // important
+
+        // this will create a property on the instance, however it wont be reactive - so its kind of useless
+        vm1.newProp = 'New!';
+        console.log(vm1);
+
+
+        // important - changing the DOM with $refs is not reactive.
         // you can use $refs to access and manipulate DOM elements directly but be careful because 
         // when vue js re-renders, it does so based on its own template - potentially ignoring/overriding any changes made with $refs on the actual DOM
         // for this reason $refs is more useful for getting values as opposed to setting them
         vm1.$refs.heading.innerText = 'New Heading';
 
 
+        // vue js does not create code that lives in its own enclosed world. its normal javascript code that can interact with other javascript code
         setTimeout(function () {
             vm1.title = 'Changed by Timer!';
             vm1.show();
         }, 3000);
-
-        // this will create a property on the instance, however it wont be reactive - so its kindof useless
-        vm1.newProp = 'New!';
-        console.log(vm1);
-
         console.log(vm1.title, vm1.$data.title);
-        // vue js does not create code that lives in its own enclosed world. its normal javascript code that can interact with other javascript code
         console.log(data === vm1.$data);
 
+
+        // you can have multiple vue js instances
         var vm2 = new Vue({
             el: '#app2',
             data: {
@@ -92,6 +119,46 @@
                 }
             }
         });
+
+
+
+        // ***************************************************        
+        // ************ mounting vue instances ***************
+        // ***************************************************        
+
+
+        var vm3 = new Vue({
+            // method 1 - if we know where to mount our instance, then use the el property 
+            el: '#app3',
+
+            template: '<h1>Hello</h1>'
+        })
+
+        // method 2 - if we dont yet know where to mount our instance, then use instance.$mount(cssSelector)
+        // vm3.$mount('#app3');
+
+        // method 3 - another option but a little extra
+        // vm3.$mount();
+        // document.getElementById('app3').appendChild(vm3.$el);
+
+
+
+
+        // ***************************************************        
+        // *************** vue js versions *******************
+        // *************************************************** 
+
+        // 2 versions of vue js:
+
+        // 1) has a compiler built in which runs in the browser 
+        // this version supports template and the el property
+        // but must respect some rules of the browser e.g. case insensitive tags
+
+        // 2) without a compiler
+        // we compile our templates during the build process 
+        // this pre-compiled version is smaller and faster
+
+
     </script>
 </body>
 
