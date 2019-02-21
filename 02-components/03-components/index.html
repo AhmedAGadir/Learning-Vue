@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <my-component></my-component>
+        <my-component></my-component>
+        <my-component></my-component>
+    </div>
+
+    <script>
+
+        // ********************
+        // *** not reusable ***
+        // ********************
+
+        // new Vue({
+        //     el: '#app',
+        //     template: '<p>Server Status: {{ status }}</p>',
+        //     data: {
+        //         status: 'Critical'
+        //     },
+        // })
+
+
+        // ****************
+        // *** reusable ***
+        // ****************
+
+        Vue.component('my-component', {
+            // data is a function returning an object 
+            data: function () {
+                return {
+                    status: 'Critical'
+                }
+            },
+            template: '<p>Server Status: {{ status }}</p>',
+        })
+
+        new Vue().$mount('#app');
+
+
+        // ********************
+        // *** dont do this ***
+        // ********************
+
+        // every time a <my-component></my-component> tag is used in our HTML, our data function is meant to return a new object unique to that component instance
+        // however in the example below, we are doing something wrong. (to see this click the button in any instance and observe how all templates are affected)
+        // the reason for this is that each instance has a reference to the same data object, instead of creating a new object like we did above
+
+        // var data = {
+        //     status: 'Critical'
+        // };
+
+        // Vue.component('my-component', {
+        //     data: function () {
+        //         return data;
+        //     },
+        //     template: '<p>Server Status: {{ status }} <button @click="changeStatus">Change</button></p>',
+        //     methods: {
+        //         changeStatus: function () {
+        //             this.status = 'Changed'
+        //         }
+        //     }
+        // })
+
+        // new Vue().$mount('#app');
+
+    </script>
+</body>
+
+</html>

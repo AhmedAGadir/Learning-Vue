@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <my-component></my-component>
+        <my-component></my-component>
+        <my-component></my-component>
+    </div>
+
+    <hr>
+
+    <div id="app2">
+        <my-component></my-component>
+        <my-component></my-component>
+        <my-component></my-component>
+    </div>
+
+    <script>
+
+        // ••••••••••••••••••••••••••••••••••••
+        // •••••••• global components •••••••••
+        // ••••••••••••••••••••••••••••••••••••
+
+        // Vue.component('my-component', {
+        //     data: function () {
+        //         return {
+        //             status: 'Critical'
+        //         }
+        //     },
+        //     template: '<p>Server Status: {{ status }}</p>',
+        // })
+
+        // new Vue().$mount('#app');
+        // new Vue().$mount('#app2');
+
+
+
+        // ••••••••••••••••••••••••••••••••••••
+        // •••••••• scoped components •••••••••
+        // ••••••••••••••••••••••••••••••••••••
+
+        var cmp = {
+            data: function () {
+                return {
+                    status: 'Critical'
+                }
+            },
+            template: '<p>Server Status: {{ status }}</p>',
+        };
+
+        new Vue({
+            el: '#app',
+            components: {
+                // using <my-component></my-component> tags outside of #app now wont work
+                'my-component': cmp
+            }
+        });
+
+        new Vue().$mount('#app2');
+
+
+
+
+    </script>
+</body>
+
+</html>
