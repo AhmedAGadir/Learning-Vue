@@ -4,12 +4,14 @@
     <p>Many Details</p>
     <!-- passing data down -->
     <p>User Name: {{ transformName() }}</p>
+    <p>User Age: {{ myAge }}</p>
     <!-- passing data up -->
     <button @click="resetName">Reset Name</button>
   </div>
 </template>
 
 <script>
+import { eventBus } from "../main.js";
 export default {
   //   ••• can use case sensitive props when using webpack setup •••
   //   ••• if we want to validate prop types, then dont use an array, use an object •••
@@ -32,6 +34,9 @@ export default {
       //           name: 'Max'
       //       }
       //   }
+    },
+    myAge: {
+      type: Number
     }
   },
   methods: {
@@ -52,6 +57,14 @@ export default {
       this.$emit("nameWasReset", "Max");
     }
   }
+  // created() {
+  //   // the created lifecycle hook is a good place to register listeners
+  //   // an eventBus is useful when you need to pass data between components without traversing long parent/children chains (see "./userEdit.vue")
+  //   // not needed at the moment since we only need to go up a single level to allow data to be received from './userEdit'
+  //   eventBus.$on("ageWasEdited", age => {
+  //     this.myAge = age;
+  //   });
+  // }
 };
 </script>
 
