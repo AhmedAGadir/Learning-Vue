@@ -54,6 +54,7 @@ export default {
       //   this.myName = "Max";
 
       // built in vue method that emits a custom event and allows you to pass data up
+      // note: custom events dont propogate up, so this can only be reached 1 level above
       this.$emit("nameWasReset", "Max");
     }
   }

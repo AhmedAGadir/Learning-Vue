@@ -8,9 +8,9 @@ import App from './App.vue'
 
 // event bus that has some code centralized in good - good for avoiding duplicate code and storing some data that can be accessible anywhere throughout our application 
 export const eventBus = new Vue({
-  data: {
+  data: () => ({
     // can add data here
-  },
+  }),
   methods: {
     changeAge(age) {
       this.$emit('ageWasEdited', age);
