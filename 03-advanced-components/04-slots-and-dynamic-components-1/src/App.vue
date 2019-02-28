@@ -29,6 +29,23 @@
         <!-- ************************************************************** -->
         <!-- ************************************************************** -->
         <!-- switching multiple components with dynamic components -->
+        <button @click="selectedComponent = 'appQuote'">Quote</button>
+        <button @click="selectedComponent = 'appAuthor'">Author</button>
+        <button @click="selectedComponent = 'app-new'">New</button>
+        <hr>
+        <p>{{ selectedComponent }}</p>
+        <!-- reserved component <component></component> which allows us to dynamically add components-->
+        <!-- when changing the selected component, they are destroyed and created each time -->
+        <!-- <component :is='selectedComponent'>
+          <p>Default Content</p>
+        </component> -->
+        <!-- to prevent this from happening, wrap the component with a <keep-alive></keep-alive> tag-->
+        <!-- now the component will not be destroyed (preserving its state) -->
+        <keep-alive>
+          <component :is='selectedComponent'>
+            <p>Default Content</p>
+          </component>
+        </keep-alive>
       </div>
     </div>
   </div>
@@ -41,12 +58,13 @@ import appNew from "./components/New.vue";
 export default {
   // remember in proper project setups, data must be a function that returns an object!
   data: () => ({
-    quote: "a wONDERFUL qUOTE"
+    quote: "a wONDERFUL qUOTE",
+    selectedComponent: "appQuote"
   }),
   components: {
     appQuote: Quote,
     appAuthor,
-    appNew
+    "app-new": appNew
   }
 };
 </script>
