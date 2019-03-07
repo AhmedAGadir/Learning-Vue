@@ -83,6 +83,8 @@
       <hr>
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <!-- if you only have one button in a form, it will submit when clicked -
+          to stop the default behaviour use the .prevent modifier-->
           <button class="btn btn-primary" @click.prevent="submitForm">Submit!</button>
         </div>
       </div>
