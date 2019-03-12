@@ -38,6 +38,7 @@ export default {
     }
   }
   // // changing this to a mixin now
+  // // better to use computed properties than filters
   // computed: {
   //   computedReverseText() {
   //     return this.text
