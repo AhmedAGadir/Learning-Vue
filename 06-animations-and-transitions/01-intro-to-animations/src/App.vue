@@ -18,10 +18,12 @@
 
         css class is .v-enter if no name is supplied
         -->
+        <!-- the name attribute doesnt have to be static, it can be dynamic e.g. use :name instead of name -->
         <transition name="fade">
           <div class="alert alert-info" v-if="show">This is some info</div>
         </transition>
-        <transition name="slide">
+        <!-- how to animate an element when the page is first loaded by adding the 'appear' attribute-->
+        <transition name="slide" appear>
           <div class="alert alert-info" v-show="show">This is some info</div>
         </transition>
         <!-- in the case that we're using both animations and transitions, and they each take different lengths, then 
@@ -29,16 +31,142 @@
         <transition name="slide-fade" type="transition">
           <div class="alert alert-info" v-if="show">This is some info</div>
         </transition>
+        <!-- * added the animate.css library to the project-->
+        <!-- we can ovverride the default vue classes (v-enter, v-enter-active etc) -->
+        <!-- note: you cant use the 'appear' attribute when you set up your own classes -->
+        <transition
+          name="fade"
+          appear
+          enter-active-class="animated bounce"
+          leave-active-class="animated shake"
+        >
+          <div class="alert alert-info" v-if="show">This is some info</div>
+        </transition>
+
+        <!-- how to transition from one element to another -->
+        <!-- the conditions for rendering the elements need to alternate -->
+        <!-- note: this doesnt work with v-show, only works with v-if -->
+        <!-- keys need to be added -->
+        <!-- two modes to chose from: (1) out-in (2) in-out
+          out-in: let the old element animate out then bring in the new one 
+          in-out: let the new element come in, then get rid of the old one
+        -->
+        <transition name="fade" mode="out-in">
+          <div class="alert alert-warning" v-if="show" key="warning">This is some warning</div>
+          <div class="alert alert-info" v-else key="info">This is some info</div>
+        </transition>
+
+        <!-- if you want to animate via javascript, you can do so by listening to the transition elements lifecycle hooks -->
+        <!-- 
+          1) before-enter
+          2) enter
+          3) after-enter
+          4) after-enter-cancelled
+
+          1) before-leave
+          2) leave
+          3) after-leave
+          4) after-leave-cancelled
+        -->
+        <hr>
+        <button class="btn btn-primary" @click="load = !load">Load / Remove Element</button>
+        <br>
+        <br>
+        <!-- add :css="false" to let vue js know we're not using CSS classes here -->
+        <transition
+          @before-enter="beforeEnter"
+          @enter="enter"
+          @after-enter="afterEnter"
+          @enter-cancelled="enterCancelled"
+          @before-leave="beforeLeave"
+          @leave="leave"
+          @after-leave="afterLeave"
+          @leave-cancelled="leaveCancelled"
+          :css="false"
+        >
+          <div style="width: 300px; height: 100px; background-color: lightgreen" v-if="load"></div>
+        </transition>
+        <br>
+        <br>
+        <!-- transitioning with dynamic components -->
+        <button
+          class="btn btn-primary"
+          @click="selectedComponent = selectedComponent === 'app-success-alert' ? 'app-danger-alert' : 'app-success-alert'"
+        >Toggle Components</button>
+        <br>
+        <br>
+        <transition name="fade" mode="out-in">
+          <component :is="selectedComponent"></component>
+        </transition>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import DangerAlert from "./DangerAlert.vue";
+import SuccessAlert from "./SuccessAlert.vue";
 export default {
   data: () => ({
-    show: false
-  })
+    show: false,
+    load: true,
+    elementWidth: 100,
+    selectedComponent: "app-success-alert"
+  }),
+  methods: {
+    beforeEnter(el) {
+      console.log("beforeEnter");
+      this.elementWidth = 100;
+      el.style.width = this.elementWidth + "px";
+    },
+    enter(el, done) {
+      console.log("enter");
+      let round = 1;
+      const interval = setInterval(() => {
+        el.style.width = this.elementWidth + round * 10 + "px";
+        round++;
+        if (round > 20) {
+          clearInterval(interval);
+          done();
+          // done tells vue js the animation is finished
+        }
+      }, 20);
+    },
+    afterEnter(el) {
+      console.log("afterEnter");
+    },
+    enterCancelled(el) {
+      console.log("enterCancelled");
+    },
+    beforeLeave(el) {
+      console.log("beforeLeave");
+      this.elementWidth = 300;
+      el.style.width = this.elementWidth + "px";
+    },
+    leave(el, done) {
+      console.log("leave");
+      let round = 1;
+      const interval = setInterval(() => {
+        el.style.width = this.elementWidth - round * 10 + "px";
+        round++;
+        if (round > 20) {
+          clearInterval(interval);
+          done();
+          // done tells vue js the animation is finished
+        }
+      }, 20);
+    },
+    afterLeave(el) {
+      console.log("afterLeave");
+    },
+    leaveCancelled(el) {
+      console.log("leaveCancelled");
+    }
+  },
+  components: {
+    appDangerAlert: DangerAlert,
+    appSuccessAlert: SuccessAlert
+  }
 };
 </script>
 
