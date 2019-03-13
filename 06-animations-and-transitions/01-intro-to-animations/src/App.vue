@@ -88,6 +88,7 @@
         </transition>
         <br>
         <br>
+
         <!-- transitioning with dynamic components -->
         <button
           class="btn btn-primary"
@@ -98,6 +99,29 @@
         <transition name="fade" mode="out-in">
           <component :is="selectedComponent"></component>
         </transition>
+
+        <!-- animating lists using <transition-group></transition-group> -->
+        <!-- 
+          works exactly like <transition>, only difference is that <transition> is not rendered to the DOM, wheras <transition-group> renders a new HTML tag to the DOM,
+          the default tag rendered is a <span> but you can override this by setting the tag attribute e.g. <transition-group tag="DIV">
+          note: must always include a :key with transition-group elements
+        -->
+        <!-- transition-group also gives us a new CSS class "*-move" (v-move by default) which can be used to animate, elements in the group that have to move in order to make space for the new element  -->
+        <hr>
+        <button class="btn btn-primary" @click="addItem">Add Item</button>
+        <br>
+        <br>
+        <ul class="list-group">
+          <transition-group name="slide">
+            <li
+              class="list-group-item"
+              v-for="(number, ind) in numbers"
+              :key="number"
+              @click="removeItem(ind)"
+              style="cursor: pointer"
+            >{{ number }}</li>
+          </transition-group>
+        </ul>
       </div>
     </div>
   </div>
@@ -111,7 +135,8 @@ export default {
     show: false,
     load: true,
     elementWidth: 100,
-    selectedComponent: "app-success-alert"
+    selectedComponent: "app-success-alert",
+    numbers: [1, 2, 3, 4, 5]
   }),
   methods: {
     beforeEnter(el) {
@@ -161,6 +186,13 @@ export default {
     },
     leaveCancelled(el) {
       console.log("leaveCancelled");
+    },
+    addItem() {
+      const pos = Math.floor(Math.random() * this.numbers.length);
+      this.numbers.splice(pos, 0, this.numbers.length + 1);
+    },
+    removeItem(ind) {
+      this.numbers.splice(ind, 1);
     }
   },
   components: {
@@ -214,6 +246,13 @@ export default {
 
 .slide-leave-active {
   animation: slide-out 1s ease-out forwards;
+  /* position: absolute is added for transition-group purposes: i.e. to allows elements to be removed smoothly in the DOM (see lecture 202, time: 5:00 to know more) */
+  position: absolute;
+}
+
+.slide-move {
+  /* vue js knows what to do behind the scenes now */
+  transition: transform 1s;
 }
 
 @keyframes slide-in {
