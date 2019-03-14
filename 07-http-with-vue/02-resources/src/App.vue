@@ -43,14 +43,9 @@ export default {
   }),
   methods: {
     submit() {
-      // vueresource gives every instance in our application access to this.$http
-
-      // the url is https://vuejs-http-5dbe2.firebaseio.com/
-      // we have to add '/_NODE_NAME' to the url to create a node in our database (we called ours 'data)
-      // then we have to add '.json' at the end
-
+      // we can configure a default url in our application - see main.js
       this.$http
-        .post("https://vuejs-http-5dbe2.firebaseio.com/data.json", this.user)
+        .post("data.json", this.user)
         .then(response => {
           console.log(response);
         })
@@ -60,7 +55,7 @@ export default {
     },
     fetchData() {
       this.$http
-        .get("https://vuejs-http-5dbe2.firebaseio.com/data.json")
+        .get("data.json")
         .then(response => response.json())
         .then(data => {
           this.users = Object.keys(data).map(key => data[key]);
