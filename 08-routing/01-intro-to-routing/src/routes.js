@@ -16,6 +16,9 @@ export const routes = [
             { path: ':id', component: UserDetail },
             // giving names makes redirecting a little easier (see 'UserDetail.vue)
             { path: ':id/edit', component: UserEdit, name: 'userEdit' },
+            // how to cover pages that dont exist (make sure the following route is last on the array)
+            { path: '*', redirect: '/' },
+
         ]
     }
 
