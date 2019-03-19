@@ -66,7 +66,7 @@ export default {
       // this.resource.save({}, this.user);
       // with dynamic url configured
       this.resource.save({ node: this.node }, this.user);
-      // or
+      // custom actions
       // this.resource.saveAlt(this.user);
     },
     fetchData() {

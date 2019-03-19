@@ -10,8 +10,18 @@
     <router-link to="/" tag="li" active-class="active" exact>
       <a>Home</a>
     </router-link>
-    <router-link to="/user/10" tag="li" active-class="active">
+    <!-- OPTION A -->
+    <!-- <router-link to="/user/1" tag="li" active-class="active">
+      <a>User 1</a>
+    </router-link>
+    <router-link to="/user/2" tag="li" active-class="active">
+      <a>User 2</a>
+    </router-link>-->
+    <!-- OPTION B -->
+    <router-link to="/user" tag="li" active-class="active">
       <a>User</a>
     </router-link>
+    <!-- if you wanted to you could set up query params in the 'to' property e.g. -->
+    <!-- <router-link to="/user?a=100&b='hello'" tag="li" active-class="active"><a>User</a></router-link> -->
   </ul>
 </template>
