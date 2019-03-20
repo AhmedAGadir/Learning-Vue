@@ -2,19 +2,15 @@
   <div>
     <h3>Some User Details</h3>
     <p>User loaded has ID: {{ $route.params.id }}</p>
-    <!-- ***** without names ***** -->
-    <!-- <router-link
-      tag="button"
-      :to="'/user/' + $route.params.id + '/edit'"
-      class="btn btn-primary"
-    >Edit User</router-link>-->
-    <!-- ***** with names ***** -->
-    <!-- query uses key-value pairs (name them anything you want) -->
-    <!-- make sure to use '':to' (and not 'to') if passing an object to the 'to' property -->
     <router-link
       tag="button"
       :to="{ name: 'userEdit', params: { id: $route.params.id }, query: {locale: 'en', q: 100} }"
       class="btn btn-primary"
     >Edit User</router-link>
+    <!-- note, named routes look cleaner -->
+    <!-- without using named routes -->
+    <!-- :to="'/user/' + $route.params.id + '/edit'" -->
+    <!--  with named routes -->
+    <!-- :to="{ name: 'userEdit', params: { id: $route.params.id }, query: {locale: 'en', q: 100} }" -->
   </div>
 </template>

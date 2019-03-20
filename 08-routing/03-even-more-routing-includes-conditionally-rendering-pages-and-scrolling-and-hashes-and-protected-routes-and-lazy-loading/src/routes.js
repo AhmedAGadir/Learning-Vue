@@ -5,16 +5,13 @@ import UserDetail from './components/user/UserDetail.vue';
 import UserEdit from './components/user/UserEdit.vue';
 
 export const routes = [
-    { path: '/', component: Home },
+    { path: '/', name: 'Home', component: Home },
     {
         path: '/user', component: User, children: [
             { path: '', component: UserStart },
             { path: ':id', component: UserDetail },
-            // giving names makes redirecting a little easier (see 'UserDetail.vue)
-            { path: ':id/edit', component: UserEdit, name: 'userEdit' },
-            // how to cover pages that dont exist (make sure the following route is last on the array)
+            { path: ':id/edit', name: 'userEdit', component: UserEdit },
             { path: '*', redirect: '/' },
-
         ]
     }
 
