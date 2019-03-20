@@ -5,8 +5,10 @@
         <h1>Routing</h1>
         <hr>
         <app-header></app-header>
-        <!-- router-view is a built it component shipped with VueRouter -->
-        <router-view></router-view>
+        <!-- can add transitions like normals -->
+        <transition name="slide" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </div>
     </div>
   </div>
@@ -22,4 +24,5 @@ export default {
 </script>
 
 <style>
+/* create animate stuff here */
 </style>
