@@ -1,9 +1,30 @@
 import Home from './components/Home.vue';
-import User from './components/user/User.vue';
-import UserStart from './components/user/UserStart.vue';
-import UserDetail from './components/user/UserDetail.vue';
-import UserEdit from './components/user/UserEdit.vue';
 import Header from './components/Header.vue'
+
+// lazy loading with webpack - looks confusing but basically just loads bundles asynchronously when required
+const User = resolve => {
+    require.ensure(['./components/user/User.vue'], () => {
+        resolve(require('./components/user/User.vue'));
+    })
+}
+
+const UserStart = resolve => {
+    require.ensure(['./components/user/UserStart.vue'], () => {
+        resolve(require('./components/user/UserStart.vue'));
+    })
+}
+
+const UserEdit = resolve => {
+    require.ensure(['./components/user/UserEdit.vue'], () => {
+        resolve(require('./components/user/UserEdit.vue'));
+    })
+}
+
+const UserDetail = resolve => {
+    require.ensure(['./components/user/UserDetail.vue'], () => {
+        resolve(require('./components/user/UserDetail.vue'));
+    })
+}
 
 // the named router-views wont render anything if they are not specified in the 'components' property,
 // doing this allows us to render a component in different parts of the page 
