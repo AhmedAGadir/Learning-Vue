@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style>
-.slide-leave-active {
+/* .slide-leave-active {
   transition: opacity 1s ease;
   opacity: 0;
   animation: slide-out 1s ease-out forwards;
@@ -55,5 +55,5 @@ export default {
   100% {
     transform: translateY(0);
   }
-}
+} */
 </style>
