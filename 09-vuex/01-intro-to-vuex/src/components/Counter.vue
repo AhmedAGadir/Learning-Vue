@@ -41,7 +41,8 @@ export default {
     // under the hood map actions creates the following:
     // when calling the actions, we can pass params if we want
     // decrement(amount) {
-    //   this.$store.dispatch('decrement', payload);
+    //   // if we want to pass multiple params then pass an object
+    //   this.$store.dispatch('decrement', amount);
     // }
   }
 };
