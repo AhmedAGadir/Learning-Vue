@@ -1,12 +1,13 @@
 <template>
   <div>
     <button class="btn btn-primary" @click="increment">Increment</button>
-    <button class="btn btn-primary" @click="decrement">Decrement</button>
+    <button class="btn btn-primary" @click="decrement(100)">Decrement</button>
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+// import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 export default {
   // ********************************************************
   // methods: {
@@ -27,22 +28,21 @@ export default {
   // }
   // **********************************************************
   // 3) instead of having to create a method for each commit we want to make, we can use mapMutations
+  // methods: {
+  //   // can pass an array
+  //   ...mapMutations(["increment", "decrement"])
+  //   // or an object to map mutations to new names
+  //   // ...mapMutations({foo: 'increment', bar: 'decrement'})
+  // }
+  // **********************************************************
+  // 4) again, its cleaner to use actions all over our code that to mapMutations
   methods: {
-    // can pass an array
-    ...mapMutations(["increment", "decrement"])
-    // or an object to map mutations to new names
-    // ...mapMutations({foo: 'increment', bar: 'decrement'})
-  },
-  actions: {
-    // for async actions
-    // can name this action 'increment' aswell and theres no conflict because this is a different object
-    increment: context => {
-      // context just gives us access to the commit method
-      // it has a lot of the properties of our store (its not exactly the same however)
-      setTimeout(() => {
-        context.commit("increment");
-      }, 1000);
-    }
+    ...mapActions(["increment", "decrement"])
+    // under the hood map actions creates the following:
+    // when calling the actions, we can pass params if we want
+    // decrement(amount) {
+    //   this.$store.dispatch('decrement', payload);
+    // }
   }
 };
 </script>

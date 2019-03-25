@@ -23,8 +23,25 @@ export const store = new Vuex.Store({
             // we dont return a new state, we just mutate the current state
             state.counter++;
         },
-        decrement: state => {
-            state.counter--;
+        // mutations can also receive a payload 
+        decrement: (state, payload) => {
+            state.counter -= payload;
+        }
+    },
+    actions: {
+        // for async actions
+        // can name this action 'increment' as well and theres no conflict because this is a different object
+        // for clear code: its better to always use actions, even when not doing asynchronous commits
+        increment: context => {
+            // context just gives us access to the commit method
+            // it has a lot of the properties of our store (its not exactly the same however)
+            setTimeout(() => {
+                context.commit("increment");
+            }, 500);
+        },
+        decrement: (context, payload) => {
+            // we pass the payload to the mutation were gonna execute
+            context.commit("decrement", payload);
         }
     }
 })
