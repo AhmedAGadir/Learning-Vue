@@ -11,6 +11,10 @@
         <!-- <app-counter @updated="counter += $event"></app-counter> -->
         <app-counter></app-counter>
         <app-another-counter></app-another-counter>
+        <!-- to use v-model with a vuex store, use the get and set syntax for computed properties -->
+        <hr>
+        <input type="text" v-model="value">
+        <p>value is: {{ value }}</p>
       </div>
     </div>
   </div>
@@ -28,6 +32,16 @@ export default {
   //         counter: 0
   //     }
   // },
+  computed: {
+    value: {
+      get() {
+        return this.$store.getters.value;
+      },
+      set(value) {
+        this.$store.dispatch("updateValue", value);
+      }
+    }
+  },
   components: {
     appCounter: Counter,
     appResult: Result,
