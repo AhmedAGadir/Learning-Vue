@@ -24,6 +24,7 @@ export default {
   // ************************************************
   // 3) instead of having to use computed properties for every single getter that you want to access, vuex offers mapGetters
   //   if you want to be able to use the spread operator syntax then follow this: https://github.com/JeffreyWay/laravel-mix/issues/76
+  // another option you have for being able to use the spread operator is shown in 10-FINAL-PROJECT
   computed: {
     //   can pass an array
     //   ...mapGetters(['doubleCounter', 'stringCounter'])
