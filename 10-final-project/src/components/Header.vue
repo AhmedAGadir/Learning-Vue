@@ -13,12 +13,17 @@
             <a>Stocks</a>
           </router-link>
         </ul>
+        <strong class="navbar-text navbar-right">Funds: {{ funds | currency }}</strong>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#">End Day</a>
+            <a href="#" @click="endDay">End Day</a>
           </li>
           <!-- we wont import the bootstrap JS library to handle the dropdown menu, instead we'll handle it ourselves with vue.js -->
-          <li class="dropdown">
+          <li
+            class="dropdown"
+            :class="{open: isDropDownOpen}"
+            @click="isDropDownOpen = !isDropDownOpen"
+          >
             <a
               href="#"
               class="dropdown-toggle"
@@ -32,10 +37,10 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a href="#">Save Data</a>
+                <a href="#" @click="saveData">Save Data</a>
               </li>
               <li>
-                <a href="#">Load Data</a>
+                <a href="#" @click="fetchData">Load Data</a>
               </li>
             </ul>
           </li>
@@ -44,3 +49,36 @@
     </div>
   </nav>
 </template>
+
+<script>
+import { mapActions } from "vuex";
+export default {
+  data() {
+    return {
+      isDropDownOpen: false
+    };
+  },
+  computed: {
+    funds() {
+      return this.$store.getters.funds;
+    }
+  },
+  methods: {
+    ...mapActions(["randomizeStocks", "loadData"]),
+    endDay() {
+      this.randomizeStocks();
+    },
+    saveData() {
+      const data = {
+        funds: this.$store.getters.funds,
+        stockPortfolio: this.$store.getters.stocks,
+        stocks: this.$store.getters.stocks
+      };
+      this.$http.put("data.json", data);
+    },
+    fetchData() {
+      this.loadData();
+    }
+  }
+};
+</script>
