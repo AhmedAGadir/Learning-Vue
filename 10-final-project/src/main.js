@@ -30,3 +30,5 @@ new Vue({
   store,
   render: h => h(App)
 })
+
+// just need to study Vue CLI 3 now
